@@ -20,7 +20,7 @@ jobs:
           echo "${{ secrets.GSPRIVKEY }}" > ./privkey.gpg
           gpg --import privkey.gpg
           gpg --list-secret-keys
-          git secret reveal -v
+          git submodule foreach 'git secret reveal || echo submodule does not contain secrets. skipping module'
       - name: Build
         run: |
           docker-compose build
