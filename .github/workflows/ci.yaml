@@ -48,14 +48,14 @@ jobs:
         run: ssh-keyscan -H -t rsa -v ${{ secrets.DEPIP }}  >> ~/.ssh/known_hosts
       - name: Copy required files
         run: |
-          scp -r docker-compose.deploy.yml ${{ secrets.DEPUSER }}@${{ secrets.DEPIP }}:/opt/docker/leo-iot
+          scp -r docker-compose.yml ${{ secrets.DEPUSER }}@${{ secrets.DEPIP }}:/opt/docker/leo-iot
       - name: Run Docker Container
         run: |
           ssh ${{ secrets.DEPUSER }}@${{ secrets.DEPIP }} "
           cd /opt/docker/leo-iot
           echo ${{ github.token }} | docker login https://docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          docker-compose -f docker-compose.deploy.yml pull
-          docker-compose -f docker-compose.deploy.yml stop
-          docker-compose -f docker-compose.deploy.yml rm -f
-          docker-compose -f docker-compose.deploy.yml up --no-build -d
+          docker-compose pull
+          docker-compose stop
+          docker-compose rm -f
+          docker-compose up -d
           "
