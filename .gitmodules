@@ -4,3 +4,6 @@
 [submodule "leo-iot-database"]
 	path = leo-iot-database
 	url = https://github.com/leo-iot/leo-iot-database
+[submodule "leo-iot-web"]
+	path = leo-iot-web
+	url = git@github.com:leo-iot/leo-iot-web
