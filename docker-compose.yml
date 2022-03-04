@@ -1,13 +1,13 @@
 version: '3.7'
 
 services:
-#  leo-iot-web:
-#    depends_on: [ leo-iot-db, leo-iot-server ]
-#    image: ghcr.io/leo-iot/leo-iot-web/app
-#    build: leo-iot-web
-#    container_name: leo-iot-web
-#    ports:
-#      - "80:80"
+  leo-iot-web:
+    depends_on: [ leo-iot-db, leo-iot-server ]
+    image: ghcr.io/leo-iot/leo-iot-web/app
+    build: leo-iot-web
+    container_name: leo-iot-web
+    ports:
+      - "80:80"
   leo-iot-server:
     depends_on: [leo-iot-db]
     image: ghcr.io/leo-iot/leo-iot-server/app
