@@ -23,19 +23,26 @@ jobs:
           gpg --import privkey.gpg
           gpg --list-secret-keys
           git submodule foreach 'git secret reveal || echo submodule does not contain secrets. skipping module'
-      - name: Build
+      - name: Build Prod
+        if: github.ref == 'refs/heads/main'
         run: |
           docker-compose build
+      - name: Build Dev
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          docker-compose -f docker-compose-dev.yml build
       - name: Log in to the Container registry
-        if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - name: Push
+      - name: Push Prod
         if: github.ref == 'refs/heads/main'
         run: docker-compose push
+      - name: Push Dev
+        if: github.ref == 'refs/heads/develop'
+        run: docker-compose -f docker-compose-dev.yml
   start:
     name: Start Container
     needs: [build_push]
