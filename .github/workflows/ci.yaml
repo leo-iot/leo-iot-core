@@ -42,7 +42,7 @@ jobs:
         run: docker-compose push
       - name: Push Dev
         if: github.ref == 'refs/heads/develop'
-        run: docker-compose -f docker-compose-dev.yml
+        run: docker-compose -f docker-compose-dev.yml push
   start:
     name: Start Container
     needs: [build_push]
