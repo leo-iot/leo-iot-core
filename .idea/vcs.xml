@@ -4,5 +4,6 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/leo-iot-database" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/leo-iot-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/leo-iot-web" vcs="Git" />
   </component>
 </project>
