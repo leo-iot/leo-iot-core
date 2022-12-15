@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: leo-iot-backend
+  name: leo-iot-frontend
 spec:
   selector:
     matchLabels:
-      app: leo-iot-backend
+      app: leo-iot-frontend
   replicas: 1
   template:
     metadata:
       labels:
-        app: leo-iot-backend
+        app: leo-iot-frontend
     spec:
       containers:
-        - name: leo-iot-backend
-          image: "ghcr.io/leo-iot/leo-iot-server/app:latest"
+        - name: leo-iot-frontend
+          image: "ghcr.io/leo-iot/leo-iot-web/app:latest"
           ports:
             - name: http
               containerPort: 8080
@@ -22,30 +22,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: leo-iot-backend-sv
+  name: leo-iot-frontend-sv
 spec:
   selector:
-    app: leo-iot-backend
+    app: leo-iot-frontend
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 80
+      targetPort: 80
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: leo-iot-backend-ingress
+  name: leo-iot-frontend-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /location
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: leoiot.kube
       http:
         paths:
-          - path: /api/location
+          - path: /
             pathType: Prefix
             backend:
               service:
-                name: leo-iot-backend-sv
+                name: leo-iot-frontend-sv
                 port:
-                  number: 8080
+                  number: 80
