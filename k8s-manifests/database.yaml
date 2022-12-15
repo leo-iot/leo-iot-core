@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leo-iot-database
+spec:
+  selector:
+    matchLabels:
+      app: leo-iot-database
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: leo-iot-database
+    spec:
+      containers:
+        - name: leo-iot-database
+          image: "ghcr.io/leo-iot/leo-iot-database/app:latest"
+          ports:
+            - name: http
+              containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: app
+            - name: POSTGRES_USER
+              value: app
+            - name: POSTGRES_DB
+              value: db
