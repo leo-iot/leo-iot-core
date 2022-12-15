@@ -25,3 +25,15 @@ spec:
               value: app
             - name: POSTGRES_DB
               value: db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: leo-iot-db
+spec:
+  selector:
+    app: leo-iot-database
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: LoadBalancer
