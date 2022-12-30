@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: leo-iot
+# TODO: is this build even needed, maybe pull them from gh registry?
+build:
+  artifacts:
+    - image: leo-iot-backend
+      context: leo-iot-web
+    - image: leo-iot-frontend
+      context: leo-iot-server
+    - image: leo-iot-database
+      context: leo-iot-database
+  local:
+    useBuildkit: true
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s-manifests/backend.yaml
+      - ./k8s-manifests/frontend.yaml
+
+
