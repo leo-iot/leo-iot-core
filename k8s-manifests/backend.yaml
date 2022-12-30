@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: leo-iot-backend
-          image: "ghcr.io/leo-iot/leo-iot-server/app:latest"
+          image: "ghcr.io/leo-iot/leo-iot-server-k8s/app:latest"
           ports:
             - name: http
               containerPort: 8080
@@ -29,20 +29,20 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-  type: ClusterIP
+      protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: leo-iot-backend-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /location
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: leoiot.kube
       http:
         paths:
-          - path: /api/location
+          - path: /j.rathberger/backend(/|$)(.*)$
             pathType: Prefix
             backend:
               service:
