@@ -1,3 +1,33 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: leo-iot-database-pv
+  labels:
+    type: local
+    app: leo-iot-database
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: leo-iot-database-pv-claim
+  labels:
+    app: leo-iot-database
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,6 +55,13 @@ spec:
               value: app
             - name: POSTGRES_DB
               value: db
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: timescaledb
+      volumes:
+        - name: timescaledb
+          persistentVolumeClaim:
+            claimName: leo-iot-database-pv-claim
 ---
 apiVersion: v1
 kind: Service
