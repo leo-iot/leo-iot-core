@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: leo-iot-frontend
+  name: value-sim
 spec:
   selector:
     matchLabels:
-      app: leo-iot-frontend
+      app: value-sim
   replicas: 1
   template:
     metadata:
       labels:
-        app: leo-iot-frontend
+        app: value-sim
     spec:
       containers:
-        - name: leo-iot-frontend
-          image: "ghcr.io/leo-iot/leo-iot-web-k8s/app:latest"
+        - name: value-sim
+          image: "ghcr.io/leo-iot/leo-iot-value-sim-k8s/app:latest"
           ports:
             - name: http
               containerPort: 8080
@@ -22,19 +22,19 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: leo-iot-frontend-sv
+  name: value-sim-sv
 spec:
   selector:
-    app: leo-iot-frontend
+    app: value-sim
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 8080
+      targetPort: 8080
       protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: leo-iot-frontend-ingress
+  name: value-sim-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
@@ -42,10 +42,10 @@ spec:
     - host: leoiot.kube
       http:
         paths:
-          - path: /j.rathberger/frontend(/|$)(.*)$
+          - path: /j.rathberger/value-sim(/|$)(.*)$
             pathType: Prefix
             backend:
               service:
-                name: leo-iot-frontend-sv
+                name: value-sim-sv
                 port:
-                  number: 80
+                  number: 8080
