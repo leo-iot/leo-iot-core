@@ -19,9 +19,9 @@ spec:
             - name: http
               containerPort: 8080
       hostAliases:
-        - ip: "10.191.112.90"
+        - ip: "10.191.112.14"
           hostnames:
-            - "vm90.htl-leonding.ac.at"
+            - "mqtt.htl-leonding.ac.at"
 ---
 apiVersion: v1
 kind: Service
