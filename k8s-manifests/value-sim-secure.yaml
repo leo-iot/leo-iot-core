@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: value-sim-secure
+spec:
+  selector:
+    matchLabels:
+      app: value-sim-secure
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: value-sim-secure
+    spec:
+      containers:
+        - name: value-sim-secure
+          image: "ghcr.io/leo-iot/leo-iot-value-sim-k8s-secure/app:latest"
+          ports:
+            - name: http
+              containerPort: 8080
+      hostAliases:
+        - ip: "10.191.112.14"
+          hostnames:
+            - "mqtt.htl-leonding.ac.at"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: value-sim-secure-sv
+spec:
+  selector:
+    app: value-sim-secure
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: value-sim-secure-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /j.rathberger/value-sim-secure(/|$)(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: value-sim-secure-sv
+                port:
+                  number: 8080
